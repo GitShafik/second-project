@@ -2,17 +2,14 @@ const express = require("express");
 const mysql = require("mysql2/promise");
 const app = express();
 
-app.use(express.json());
+//const connection = require("./database");
+const { connectDB } = require("./database");
 
-const connection = await mysql.createConnection({
-  host: "localhost",
-  user: "your_username",
-  password: "Myester12345",
-  database: "secondProjectDB",
-});
+app.use(express.json());
 
 app.get("/api/products", async (req, res) => {
   try {
+    const connection = await connectDB();
     const [rows] = await connection.execute("SELECT * FROM Products");
     res.json(rows);
   } catch (error) {
@@ -21,6 +18,7 @@ app.get("/api/products", async (req, res) => {
 });
 
 app.get("/api/products/:id", async (req, res) => {
+  const connection = await connectDB();
   const { id } = req.params;
   try {
     const [rows] = await connection.execute(
@@ -38,6 +36,7 @@ app.get("/api/products/:id", async (req, res) => {
 });
 
 app.post("/api/products", async (req, res) => {
+  const connection = await connectDB();
   const { name, description, price, quantity, category } = req.body;
   try {
     const [result] = await connection.execute(
@@ -51,6 +50,7 @@ app.post("/api/products", async (req, res) => {
 });
 
 app.put("/api/products/:id", async (req, res) => {
+  const connection = await connectDB();
   const { id } = req.params;
   const { name, description, price, quantity, category } = req.body;
   try {
@@ -69,6 +69,7 @@ app.put("/api/products/:id", async (req, res) => {
 });
 
 app.delete("/api/products/:id", async (req, res) => {
+  const connection = await connectDB();
   const { id } = req.params;
   try {
     const [result] = await connection.execute(
@@ -86,6 +87,7 @@ app.delete("/api/products/:id", async (req, res) => {
 });
 
 app.delete("/api/products", async (req, res) => {
+  const connection = await connectDB();
   try {
     await connection.execute("DELETE FROM Products");
     res.json({ message: "All products deleted successfully" });
@@ -95,7 +97,7 @@ app.delete("/api/products", async (req, res) => {
 });
 
 app.get("/api/products", async (req, res) => {
-  //console.log();
+  const connection = await connectDB();
   const { name } = req.query;
   try {
     const [rows] = await connection.execute(

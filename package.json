@@ -2,11 +2,14 @@
   "name": "second-project",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "start.js",
+  "type": "module",
+
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+
   },
-  "author": "",
+  "author": "Group.4",
   "license": "ISC",
   "dependencies": {
     "chai": "^5.1.1",
